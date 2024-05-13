@@ -55,9 +55,15 @@ class DemonDriver(AbstractDriver):
         #             logging.debug("Dropped collection %s" % name)
 
     def exec_query(self, query):
-        self.conn.request('POST', '/query', query, {})
-        response = self.conn.getresponse()
-        return response.read()
+        for _ in range(3):
+            try: 
+                self.conn.request('POST', '/query', query, {})
+                response = self.conn.getresponse()
+                return response.read()
+            except Exception as e:
+                print(e)
+                print("retrying query...")
+                self.conn = httplib.HTTPConnection(config["host"] + ":" + str(config["port"]))
     
     ## ----------------------------------------------
     ## loadTuples
