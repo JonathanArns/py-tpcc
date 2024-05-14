@@ -45,7 +45,8 @@ class DemonDriver(AbstractDriver):
         for key in DemonDriver.DEFAULT_CONFIG.keys():
             assert key in config, "Missing parameter '%s' in %s configuration" % (key, self.name)
         
-        self.conn = httplib.HTTPConnection(config["host"] + ":" + str(config["port"]))
+        self.addr = config["host"] + ":" + str(config["port"])
+        self.conn = httplib.HTTPConnection(self.addr)
         
         # if config["reset"]:
         #     logging.debug("Deleting database '%s'" % self.database.name)
@@ -62,15 +63,14 @@ class DemonDriver(AbstractDriver):
                 return response.read()
             except Exception as e:
                 print(e)
-                print("retrying query...")
-                self.conn = httplib.HTTPConnection(config["host"] + ":" + str(config["port"]))
+                print("on query: " + query)
+                self.conn = httplib.HTTPConnection(self.addr)
     
     ## ----------------------------------------------
     ## loadTuples
     ## ----------------------------------------------
     def loadTuples(self, tableName, tuples):
         if len(tuples) == 0: return
-        print(tableName + " " + str(tuples[0]))
         logging.debug("Loading %d tuples for tableName %s" % (len(tuples), tableName))
         query = "load_tuples " + tableName + " " + ";".join([",".join([val.isoformat() if isinstance(val, datetime) else str(val) for val in item]) for item in tuples])
         self.exec_query(query)
@@ -95,7 +95,7 @@ class DemonDriver(AbstractDriver):
         o_carrier_id = params["o_carrier_id"]
         ol_delivery_d = params["ol_delivery_d"]
         
-        query = "delivery " + str(w_id) + " " + str(o_carrier_id) + " " + str(ol_delivery_d)
+        query = "delivery " + str(w_id) + " " + str(o_carrier_id) + " " + ol_delivery_d.isoformat()
         self.exec_query(query)
         # TODO: return results
         
@@ -179,10 +179,10 @@ class DemonDriver(AbstractDriver):
         d_id = params["d_id"]
         c_id = params["c_id"]
         o_entry_d = params["o_entry_d"]
-        i_ids = ",".join([str(item) in params["i_ids"]])
-        i_w_ids = ",".join([str(item) in params["i_w_ids"]])
-        i_qtys = ",".join([str(item) in params["i_qtys"]])
-        query = " ".join(["new_order", str(w_id), str(d_id), str(c_id), str(o_entry_d), i_ids, i_w_ids, i_qtys])
+        i_ids = ",".join([str(item) for item in params["i_ids"]])
+        i_w_ids = ",".join([str(item) for item in params["i_w_ids"]])
+        i_qtys = ",".join([str(item) for item in params["i_qtys"]])
+        query = " ".join(["new_order", str(w_id), str(d_id), str(c_id), o_entry_d.isoformat(), i_ids, i_w_ids, i_qtys])
         self.exec_query(query)
 
         # s_dist_col = "S_DIST_%02d" % d_id
@@ -421,7 +421,7 @@ class DemonDriver(AbstractDriver):
         c_id = params["c_id"]
         c_last = params["c_last"]
         h_date = params["h_date"]
-        query = " ".join(["payment", str(w_id), str(d_id), str(h_amount), str(c_w_id), str(c_d_id), str(c_id), str(c_last), str(h_date)])
+        query = " ".join(["payment", str(w_id), str(d_id), str(h_amount), str(c_w_id), str(c_d_id), str(c_id), str(c_last), h_date.isoformat()])
         self.exec_query(query)
 
         # search_fields = {"C_W_ID": w_id, "C_D_ID": d_id}
