@@ -96,14 +96,14 @@ def fixedPoint(decimal_places, minimum, maximum):
 
 def selectUniqueIds(numUnique, minimum, maximum):
     rows = set()
-    for i in range(0, numUnique):
+    for i in range(0, int(numUnique)):
         index = None
         while index == None or index in rows:
             index = number(minimum, maximum)
         ## WHILE
         rows.add(index)
     ## FOR
-    assert len(rows) == numUnique
+    assert len(rows) == int(numUnique)
     return rows
 ## DEF
 
