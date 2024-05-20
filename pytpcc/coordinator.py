@@ -36,6 +36,7 @@ import glob
 import time
 import pickle
 import execnet
+import pathlib
 from . import worker
 from . import message
 from configparser import ConfigParser
