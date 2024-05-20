@@ -30,7 +30,11 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 # -----------------------------------------------------------------------
 
-from .. import constants
+import os
+if os.environ.get("EXEC_MODE") == "remote_worker":
+    import constants
+else:
+    from .. import constants
 
 def makeDefault(warehouses):
     return ScaleParameters(constants.NUM_ITEMS, \

@@ -29,8 +29,12 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 # -----------------------------------------------------------------------
 
+import os
 import random
-from . import nurand
+if os.environ.get("EXEC_MODE") == "remote_worker":
+    from util import nurand
+else:
+    from . import nurand
 
 SYLLABLES = [ "BAR", "OUGHT", "ABLE", "PRI", "PRES", "ESE", "ANTI", "CALLY", "ATION", "EING" ]
 

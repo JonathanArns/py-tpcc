@@ -25,24 +25,6 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 # -----------------------------------------------------------------------
 
-import sys
-import os
-import string
-import datetime
-import logging
-import re
-import argparse
-import glob
-import time 
-from pprint import pprint,pformat
-
-if __name__=='__channelexec__':
-    from util import *
-    from runtime import *
-else:
-    from .util import *
-    from .runtime import *
-
 EMPTY = 0
 CMD_LOAD = 1
 CMD_EXECUTE = 2

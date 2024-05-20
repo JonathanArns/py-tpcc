@@ -1,5 +1,3 @@
-
-
 import os
 import sys
 import logging
@@ -7,8 +5,12 @@ import http.client
 from pprint import pprint,pformat
 from datetime import datetime
 
-from .. import constants
-from .abstractdriver import *
+if os.environ.get("EXEC_MODE") == "remote_worker":
+    import constants
+    from drivers.abstractdriver import *
+else:
+    from .. import constants
+    from .abstractdriver import *
 
 
 ## ==============================================

@@ -38,7 +38,7 @@ import pickle
 import traceback
 from pprint import pprint,pformat
 
-if __name__=='__channelexec__':
+if os.environ.get("EXEC_MODE") == "remote_worker":
     from pathlib import Path
     sys.path.append(str(Path.cwd()))
     import message

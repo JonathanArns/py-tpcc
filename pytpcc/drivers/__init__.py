@@ -7,7 +7,10 @@ import glob
 ## ==============================================
 def createDriverClass(name):
     if name == "demon":
-        from .demondriver import DemonDriver
+        if os.environ.get("EXEC_MODE") == "remote_worker":
+            from drivers.demondriver import DemonDriver
+        else:
+            from .demondriver import DemonDriver
         return DemonDriver
     if name == "cassandra":
         from .cassandradriver import CassandraDriver

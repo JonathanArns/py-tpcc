@@ -29,6 +29,7 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 # -----------------------------------------------------------------------
 
+import os
 import sys
 import multiprocessing
 import time
@@ -38,8 +39,13 @@ import logging
 from datetime import datetime
 from pprint import pprint,pformat
 
-from .. import constants
-from ..util import *
+
+if os.environ.get("EXEC_MODE") == "remote_worker":
+    import constants
+    from util import *
+else:
+    from .. import constants
+    from ..util import *
 
 
 class Executor:
