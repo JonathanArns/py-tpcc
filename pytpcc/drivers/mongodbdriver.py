@@ -29,7 +29,7 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 # -----------------------------------------------------------------------
 
-from __future__ import with_statement
+
 
 import os
 import sys
@@ -38,7 +38,7 @@ import pymongo
 from pprint import pprint,pformat
 
 import constants
-from abstractdriver import *
+from .abstractdriver import *
 
 TABLE_COLUMNS = {
     constants.TABLENAME_ITEM: [
@@ -230,7 +230,7 @@ class MongodbDriver(AbstractDriver):
     ## loadConfig
     ## ----------------------------------------------
     def loadConfig(self, config):
-        for key in MongodbDriver.DEFAULT_CONFIG.keys():
+        for key in list(MongodbDriver.DEFAULT_CONFIG.keys()):
             assert key in config, "Missing parameter '%s' in %s configuration" % (key, self.name)
         
         self.conn = pymongo.MongoClient(config['host'], int(config['port']))
@@ -272,7 +272,7 @@ class MongodbDriver(AbstractDriver):
         
         assert tableName in TABLE_COLUMNS, "Unexpected table %s" % tableName
         columns = TABLE_COLUMNS[tableName]
-        num_columns = range(len(columns))
+        num_columns = list(range(len(columns)))
         
         tuple_dicts = [ ]
         
@@ -283,7 +283,7 @@ class MongodbDriver(AbstractDriver):
             if tableName == constants.TABLENAME_CUSTOMER:
                 for t in tuples:
                     key = tuple(t[:3]) # C_ID, D_ID, W_ID
-                    self.w_customers[key] = dict(map(lambda i: (columns[i], t[i]), num_columns))
+                    self.w_customers[key] = dict([(columns[i], t[i]) for i in num_columns])
                 ## FOR
                 
             ## If this is an ORDER_LINE record, then we need to stick it inside of the 
@@ -297,7 +297,7 @@ class MongodbDriver(AbstractDriver):
                     assert o_idx < len(c[constants.TABLENAME_ORDERS])
                     o = c[constants.TABLENAME_ORDERS][o_idx]
                     if not tableName in o: o[tableName] = [ ]
-                    o[tableName].append(dict(map(lambda i: (columns[i], t[i]), num_columns[4:])))
+                    o[tableName].append(dict([(columns[i], t[i]) for i in num_columns[4:]]))
                 ## FOR
                     
             ## Otherwise we have to find the CUSTOMER record for the other tables
@@ -316,7 +316,7 @@ class MongodbDriver(AbstractDriver):
                     c = self.w_customers[c_key]
                     
                     if not tableName in c: c[tableName] = [ ]
-                    c[tableName].append(dict(map(lambda i: (columns[i], t[i]), cols)))
+                    c[tableName].append(dict([(columns[i], t[i]) for i in cols]))
                     
                     ## Since ORDER_LINE doesn't have a C_ID, we have to store a reference to
                     ## this ORDERS record so that we can look it up later
@@ -329,7 +329,7 @@ class MongodbDriver(AbstractDriver):
         ## Otherwise just shove the tuples straight to the target collection
         else:
             for t in tuples:
-                tuple_dicts.append(dict(map(lambda i: (columns[i], t[i]), num_columns)))
+                tuple_dicts.append(dict([(columns[i], t[i]) for i in num_columns]))
             ## FOR
             self.database[tableName].insert(tuple_dicts)
         ## IF
@@ -342,7 +342,7 @@ class MongodbDriver(AbstractDriver):
     def loadFinishDistrict(self, w_id, d_id):
         if self.denormalize:
             logging.debug("Pushing %d denormalized CUSTOMER records for WAREHOUSE %d DISTRICT %d into MongoDB" % (len(self.w_customers), w_id, d_id))
-            self.database[constants.TABLENAME_CUSTOMER].insert(self.w_customers.values())
+            self.database[constants.TABLENAME_CUSTOMER].insert(list(self.w_customers.values()))
             self.w_customers.clear()
             self.w_orders.clear()
         ## IF

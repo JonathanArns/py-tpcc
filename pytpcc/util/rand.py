@@ -30,7 +30,7 @@
 # -----------------------------------------------------------------------
 
 import random
-import nurand
+from . import nurand
 
 SYLLABLES = [ "BAR", "OUGHT", "ABLE", "PRI", "PRES", "ESE", "ANTI", "CALLY", "ATION", "EING" ]
 
@@ -45,7 +45,7 @@ def NURand(a, x, y):
     global nurandVar
     assert x <= y
     if nurandVar is None:
-		setNURand(nurand.makeForLoad())
+        setNURand(nurand.makeForLoad())
     
     if a == 255:
         c = nurandVar.cLast
@@ -129,8 +129,8 @@ def makeLastName(number):
     """A last name as defined by TPC-C 4.3.2.3. Not actually random."""
     global SYLLABLES
     assert 0 <= number and number <= 999
-    indicies = [ number/100, (number/10)%10, number%10 ]
-    return "".join(map(lambda x: SYLLABLES[x], indicies))
+    indicies = [number/100, (number/10)%10, number%10]
+    return "".join([SYLLABLES[int(x)] for x in indicies])
 ## DEF
 
 def makeRandomLastName(maxCID):

@@ -78,7 +78,7 @@ class Results:
         self.txn_counters[txn_name] = total_cnt + 1
         
     def append(self, r):
-        for txn_name in r.txn_counters.keys():
+        for txn_name in list(r.txn_counters.keys()):
             orig_cnt = self.txn_counters.get(txn_name, 0)
             orig_time = self.txn_times.get(txn_name, 0)
 
@@ -105,19 +105,19 @@ class Results:
         f = "\n  " + (("%-" + str(col_width) + "s")*4)
         line = "-"*total_width
 
-        ret = u"" + "="*total_width + "\n"
+        ret = "" + "="*total_width + "\n"
         if load_time != None:
             ret += "Data Loading Time: %d seconds\n\n" % (load_time)
         
         ret += "Execution Results after %d seconds\n%s" % (duration, line)
-        ret += f % ("", "Executed", u"Time (µs)", "Rate")
+        ret += f % ("", "Executed", "Time (µs)", "Rate")
         
         total_time = 0
         total_cnt = 0
         for txn in sorted(self.txn_counters.keys()):
             txn_time = self.txn_times[txn]
             txn_cnt = self.txn_counters[txn]
-            rate = u"%.02f txn/s" % ((txn_cnt / txn_time))
+            rate = "%.02f txn/s" % ((txn_cnt / txn_time))
             ret += f % (txn, str(txn_cnt), str(txn_time * 1000000), rate)
             
             total_time += txn_time

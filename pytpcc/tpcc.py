@@ -35,12 +35,14 @@ import argparse
 import glob
 import time 
 import multiprocessing
-from ConfigParser import SafeConfigParser
+import pathlib
+from importlib import import_module
+from configparser import ConfigParser
 from pprint import pprint,pformat
 
-from util import *
-from runtime import *
-import drivers
+from .util import *
+from .runtime import *
+from . import drivers
 
 logging.basicConfig(level = logging.INFO,
                     format="%(asctime)s [%(funcName)s:%(lineno)03d] %(levelname)-5s: %(message)s",
@@ -52,7 +54,7 @@ logging.basicConfig(level = logging.INFO,
 ## ==============================================
 def createDriverClass(name):
     full_name = "%sDriver" % name.title()
-    mod = __import__('drivers.%s' % full_name.lower(), globals(), locals(), [full_name])
+    mod = import_module(f".{full_name.lower()}", package="pytpcc.drivers")
     klass = getattr(mod, full_name)
     return klass
 ## DEF
@@ -62,7 +64,7 @@ def createDriverClass(name):
 ## ==============================================
 def getDrivers():
     drivers = [ ]
-    for f in map(lambda x: os.path.basename(x).replace("driver.py", ""), glob.glob("./drivers/*driver.py")):
+    for f in [os.path.basename(x).replace("driver.py", "") for x in glob.glob(f"{pathlib.Path(__file__).parent.resolve()}/drivers/*driver.py")]:
         if f != "abstract": drivers.append(f)
     return (drivers)
 ## DEF
@@ -76,7 +78,7 @@ def startLoading(driverClass, scaleParameters, args, config):
     debug = logging.getLogger().isEnabledFor(logging.DEBUG)
     
     # Split the warehouses into chunks
-    w_ids = map(lambda x: [ ], range(args['clients']))
+    w_ids = [[ ] for x in range(args['clients'])]
     for w_id in range(scaleParameters.starting_warehouse, scaleParameters.ending_warehouse+1):
         idx = w_id % args['clients']
         w_ids[idx].append(w_id)
@@ -114,7 +116,7 @@ def loaderFunc(driverClass, scaleParameters, args, config, w_ids, debug):
         driver.loadFinish()   
     except KeyboardInterrupt:
             return -1
-    except (Exception, AssertionError), ex:
+    except (Exception, AssertionError) as ex:
         logging.warn("Failed to load data: %s" % (ex))
         #if debug:
         traceback.print_exc(file=sys.stdout)
@@ -177,7 +179,7 @@ if __name__ == '__main__':
     aparser = argparse.ArgumentParser(description='Python implementation of the TPC-C Benchmark')
     aparser.add_argument('system', choices=getDrivers(),
                          help='Target system driver')
-    aparser.add_argument('--config', type=file,
+    aparser.add_argument('--config', type=argparse.FileType('r'),
                          help='Path to driver configuration file')
     aparser.add_argument('--reset', action='store_true',
                          help='Instruct the driver to reset the contents of the database')
@@ -216,26 +218,26 @@ if __name__ == '__main__':
     assert driver != None, "Failed to create '%s' driver" % args['system']
     if args['print_config']:
         config = driver.makeDefaultConfig()
-        print driver.formatConfig(config)
-        print
+        print(driver.formatConfig(config))
+        print()
         sys.exit(0)
 
     ## Load Configuration file
     if args['config']:
         logging.debug("Loading configuration file '%s'" % args['config'])
-        cparser = SafeConfigParser()
+        cparser = ConfigParser()
         cparser.read(os.path.realpath(args['config'].name))
         config = dict(cparser.items(args['system']))
     else:
         logging.debug("Using default configuration for %s" % args['system'])
         defaultConfig = driver.makeDefaultConfig()
-        config = dict(map(lambda x: (x, defaultConfig[x][1]), defaultConfig.keys()))
+        config = dict([(x, defaultConfig[x][1]) for x in list(defaultConfig.keys())])
     config['reset'] = args['reset']
     config['load'] = False
     config['execute'] = False
-    if config['reset']: logging.info("Reseting database")
+    # if config['reset']: logging.info("Reseting database")
     driver.loadConfig(config)
-    logging.info("Initializing TPC-C benchmark using %s" % driver)
+    # logging.info("Initializing TPC-C benchmark using %s" % driver)
 
     ## Create ScaleParameters
     scaleParameters = scaleparameters.makeWithScaleFactor(args['warehouses'], args['scalefactor'])
@@ -245,10 +247,10 @@ if __name__ == '__main__':
     ## DATA LOADER!!!
     load_time = None
     if not args['no_load']:
-        logging.info("Loading TPC-C benchmark data using %s" % (driver))
+        # logging.info("Loading TPC-C benchmark data using %s" % (driver))
         load_start = time.time()
         if args['clients'] == 1:
-            l = loader.Loader(driver, scaleParameters, range(scaleParameters.starting_warehouse, scaleParameters.ending_warehouse+1), True)
+            l = loader.Loader(driver, scaleParameters, list(range(scaleParameters.starting_warehouse, scaleParameters.ending_warehouse+1)), True)
             driver.loadStart()
             l.execute()
             driver.loadFinish()
@@ -267,7 +269,7 @@ if __name__ == '__main__':
         else:
             results = startExecution(driverClass, scaleParameters, args, config)
         assert results
-        print results.show(load_time)
+        print(results.show(load_time))
     ## IF
     
 ## MAIN

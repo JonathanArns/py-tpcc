@@ -38,8 +38,8 @@ import logging
 from datetime import datetime
 from pprint import pprint,pformat
 
-import constants
-from util import *
+from .. import constants
+from ..util import *
 
 
 class Executor:
@@ -66,7 +66,7 @@ class Executor:
                 val = self.driver.executeTransaction(txn, params)
             except KeyboardInterrupt:
                 return -1
-            except (Exception, AssertionError), ex:
+            except (Exception, AssertionError) as ex:
                 logging.warn("Failed to execute Transaction '%s': %s" % (txn, ex))
                 if debug: traceback.print_exc(file=sys.stdout)
                 if self.stop_on_error: raise
@@ -248,5 +248,5 @@ class Executor:
 ## CLASS
 
 def makeParameterDict(values, *args):
-    return dict(map(lambda x: (x, values[x]), args))
+    return dict([(x, values[x]) for x in args])
 ## DEF

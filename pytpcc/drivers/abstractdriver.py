@@ -26,7 +26,7 @@
 
 from datetime import datetime
 
-import constants
+from .. import constants
 
 ## ==============================================
 ## AbstractDriver
@@ -57,7 +57,7 @@ class AbstractDriver(object):
         ret += "# Created %s\n" % (datetime.now())
         ret += "[%s]" % self.name
         
-        for name in config.keys():
+        for name in list(config.keys()):
             desc, default = config[name]
             if default == None: default = ""
             ret += "\n\n# %s\n%-20s = %s" % (desc, name, default) 

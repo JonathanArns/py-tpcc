@@ -34,14 +34,14 @@ import re
 import argparse
 import glob
 import time 
-import message
+from . import message
 import pickle
 import traceback
 from pprint import pprint,pformat
 
-from util import *
-from runtime import *
-import drivers
+from .util import *
+from .runtime import *
+from . import drivers
 
 ## ==============================================
 ## createDriverClass
@@ -75,7 +75,7 @@ def loaderFunc(driverClass, scaleParameters, args, config, w_ids, debug):
         driver.loadFinish()   
     except KeyboardInterrupt:
             return -1
-    except (Exception, AssertionError), ex:
+    except (Exception, AssertionError) as ex:
         logging.warn("Failed to load data: %s" % (ex))
         #if debug:
         traceback.print_exc(file=sys.stdout)
