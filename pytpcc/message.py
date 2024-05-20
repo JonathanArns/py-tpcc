@@ -36,9 +36,12 @@ import glob
 import time 
 from pprint import pprint,pformat
 
-from .util import *
-from .runtime import *
-from . import drivers
+if __name__=='__channelexec__':
+    from util import *
+    from runtime import *
+else:
+    from .util import *
+    from .runtime import *
 
 EMPTY = 0
 CMD_LOAD = 1
