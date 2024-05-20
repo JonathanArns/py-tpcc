@@ -40,7 +40,7 @@ from pprint import pprint,pformat
 
 if __name__=='__channelexec__':
     from pathlib import Path
-    sys.path.append(str(Path(__file__).parent))
+    sys.path.append(str(Path.cwd()))
     import message
     from util import *
     from runtime import *
