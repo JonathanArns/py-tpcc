@@ -36,13 +36,20 @@ import glob
 import time 
 import pickle
 import traceback
-from pathlib import Path
 from pprint import pprint,pformat
 
-import message
-from util import *
-from runtime import *
-from drivers import createDriverClass
+if __name__=='__channelexec__':
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent))
+    import message
+    from util import *
+    from runtime import *
+    from drivers import createDriverClass
+else:
+    from . import message
+    from .util import *
+    from .runtime import *
+    from .drivers import createDriverClass
 
 ## ==============================================
 ## loaderFunc
@@ -96,7 +103,6 @@ def executorFunc(driverClass, scaleParameters, args, config, debug):
 
 ## MAIN
 if __name__=='__channelexec__':
-    sys.path.append(str(Path(__file__).parent))
     driverClass=None
     for item in channel:
         command=pickle.loads(item)
