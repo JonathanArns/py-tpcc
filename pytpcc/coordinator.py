@@ -39,6 +39,7 @@ import execnet
 import pathlib
 from . import worker
 from . import message
+from importlib import import_module
 from configparser import ConfigParser
 from pprint import pprint,pformat
 
