@@ -37,12 +37,13 @@ import time
 import pickle
 import execnet
 import pathlib
-from . import worker
-from . import message
+from copy import copy
 from importlib import import_module
 from configparser import ConfigParser
 from pprint import pprint,pformat
 
+from . import worker
+from . import message
 from .util import *
 from .runtime import *
 from .drivers import createDriverClass, getDrivers
@@ -65,8 +66,10 @@ def startLoading(scalParameters,args,config,channels):
     print(w_ids)
         
     load_start=time.time()
+    args_copy = copy(args)
+    del args_copy["config"]
     for i in range(len(channels)):
-        m=message.Message(header=message.CMD_LOAD,data=[scalParameters,args,config,w_ids[i]])
+        m=message.Message(header=message.CMD_LOAD,data=[scalParameters,args_copy,config,w_ids[i]])
         channels[i].send(pickle.dumps(m,-1))
     for ch in channels:
         ch.receive()
