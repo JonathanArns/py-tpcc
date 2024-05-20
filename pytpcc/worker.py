@@ -36,7 +36,7 @@ import glob
 import time 
 import pickle
 import traceback
-import pathlib
+from pathlib import Path
 from pprint import pprint,pformat
 
 from . import message
