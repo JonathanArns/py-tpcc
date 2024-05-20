@@ -23,6 +23,7 @@ def createDriverClass(name):
 ## getDrivers
 ## ==============================================
 def getDrivers():
+    drivers = []
     for f in [os.path.basename(x).replace("driver.py", "") for x in glob.glob(f"{pathlib.Path(__file__).parent.resolve()}/*driver.py")]:
         if f != "abstract": drivers.append(f)
     return (drivers)
