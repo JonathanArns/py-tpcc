@@ -11,12 +11,36 @@ def createDriverClass(name):
         return DemonDriver
     if name == "cassandra":
         from .cassandradriver import CassandraDriver
+        return CassandraDriver
+    if name == "couchdb":
+        from .couchdbdriver import CouchdbDriver
+        return CouchdbDriver
+    if name == "csv":
+        from .csvdriver import CsvDriver
+        return CsvDriver
+    if name == "hbase":
+        from .hbasedriver import HbaseDriver
+        return HbaseDriver
+    if name == "membase":
+        from .membasedriver import MembaseDriver
+        return MembaseDriver
+    if name == "mongodb":
+        from .mongodbdriver import MongodbDriver
+        return MongodbDriver
+    if name == "redis":
+        from .redisdriver import RedisDriver
+        return RedisDriver
+    if name == "scalaris":
+        from .scalarisdriver import ScalarisDriver
+        return ScalarisDriver
+    if name == "sqlite":
+        from .sqlitedriver import SqliteDriver
+        return SqliteDriver
+    if name == "tokyocabinet":
+        from .tokyocabinetdriver import TokyocabinetDriver
+        return TokyocabinetDriver
     else:
         return None
-    # full_name = "%sDriver" % name.title()
-    # mod = import_module(f".{full_name.lower()}", package="pytpcc.drivers")
-    # klass = getattr(mod, full_name)
-    # return klass
 ## DEF
 
 ## ==============================================

@@ -55,7 +55,7 @@ logging.basicConfig(level = logging.INFO,
 ## ==============================================
 ## startLoading
 ## ==============================================
-def startLoading(scalParameters,args,config,channels):  
+def startLoading(scalParameters,args,config,channels):
     #Split the warehouses into chunks
     procs = len(channels)
     w_ids = [[] for x in range(procs)]
@@ -165,7 +165,7 @@ if __name__ == '__main__':
     clients=[]
     channels=[]
     assert config['clients']!=''
-    clients=re.split(r"\s+",str(config['clients']))
+    clients=re.split(r",",str(config['clients']))
     #print clients, len(clients),args['clientprocs']
     ##Create ssh channels to client nodes
     for node in clients:
