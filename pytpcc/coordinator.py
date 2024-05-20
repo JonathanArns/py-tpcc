@@ -87,8 +87,10 @@ def startExecution(scaleParameters, args, config,channels):
     procs = len(channels)
     total_results = results.Results()
     
+    args_copy = copy(args)
+    del args_copy["config"]
     for ch in channels:
-        m=message.Message(header=message.CMD_EXECUTE,data=[scaleParameters,args,config])
+        m=message.Message(header=message.CMD_EXECUTE,data=[scaleParameters,args_copy,config])
         ch.send(pickle.dumps(m,-1))
     for ch in channels:
         r=pickle.loads(ch.receive()).data
