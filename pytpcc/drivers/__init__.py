@@ -7,40 +7,37 @@ import glob
 ## ==============================================
 def createDriverClass(name):
     if name == "demon":
-        if os.environ.get("EXEC_MODE") == "remote_worker":
-            from drivers.demondriver import DemonDriver
-        else:
-            from .demondriver import DemonDriver
+        from drivers.demondriver import DemonDriver
         return DemonDriver
     if name == "cassandra":
-        from .cassandradriver import CassandraDriver
+        from drivers.cassandradriver import CassandraDriver
         return CassandraDriver
     if name == "couchdb":
-        from .couchdbdriver import CouchdbDriver
+        from drivers.couchdbdriver import CouchdbDriver
         return CouchdbDriver
     if name == "csv":
-        from .csvdriver import CsvDriver
+        from drivers.csvdriver import CsvDriver
         return CsvDriver
     if name == "hbase":
-        from .hbasedriver import HbaseDriver
+        from drivers.hbasedriver import HbaseDriver
         return HbaseDriver
     if name == "membase":
-        from .membasedriver import MembaseDriver
+        from drivers.membasedriver import MembaseDriver
         return MembaseDriver
     if name == "mongodb":
-        from .mongodbdriver import MongodbDriver
+        from drivers.mongodbdriver import MongodbDriver
         return MongodbDriver
     if name == "redis":
-        from .redisdriver import RedisDriver
+        from drivers.redisdriver import RedisDriver
         return RedisDriver
     if name == "scalaris":
-        from .scalarisdriver import ScalarisDriver
+        from drivers.scalarisdriver import ScalarisDriver
         return ScalarisDriver
     if name == "sqlite":
-        from .sqlitedriver import SqliteDriver
+        from drivers.sqlitedriver import SqliteDriver
         return SqliteDriver
     if name == "tokyocabinet":
-        from .tokyocabinetdriver import TokyocabinetDriver
+        from drivers.tokyocabinetdriver import TokyocabinetDriver
         return TokyocabinetDriver
     else:
         return None

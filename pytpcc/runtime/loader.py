@@ -37,12 +37,8 @@ from datetime import datetime
 from random import shuffle
 from pprint import pprint,pformat
 
-if os.environ.get("EXEC_MODE") == "remote_worker":
-    import constants
-    from util import *
-else:
-    from .. import constants
-    from ..util import *
+import constants
+from util import *
 
 class Loader:
     

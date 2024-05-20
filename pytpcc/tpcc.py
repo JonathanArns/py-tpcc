@@ -40,9 +40,11 @@ from importlib import import_module
 from configparser import ConfigParser
 from pprint import pprint,pformat
 
-from .util import *
-from .runtime import *
-from .drivers import createDriverClass, getDrivers
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent))
+from util import *
+from runtime import *
+from drivers import createDriverClass, getDrivers
 
 logging.basicConfig(level = logging.INFO,
                     format="%(asctime)s [%(funcName)s:%(lineno)03d] %(levelname)-5s: %(message)s",

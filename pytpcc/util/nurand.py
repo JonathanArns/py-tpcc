@@ -30,10 +30,7 @@
 # -----------------------------------------------------------------------
 
 import os
-if os.environ.get("EXEC_MODE") == "remote_worker":
-    from util import rand
-else:
-    from . import rand
+from util import rand
 
 def makeForLoad():
     """Create random NURand constants, appropriate for loading the database."""

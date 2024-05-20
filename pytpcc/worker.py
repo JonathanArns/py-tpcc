@@ -38,18 +38,13 @@ import pickle
 import traceback
 from pprint import pprint,pformat
 
-if os.environ.get("EXEC_MODE") == "remote_worker":
+if __name__=='__channelexec__':
     from pathlib import Path
     sys.path.append(str(Path.cwd()))
-    import message
-    from util import *
-    from runtime import *
-    from drivers import createDriverClass
-else:
-    from . import message
-    from .util import *
-    from .runtime import *
-    from .drivers import createDriverClass
+import message
+from util import *
+from runtime import *
+from drivers import createDriverClass
 
 ## ==============================================
 ## loaderFunc
