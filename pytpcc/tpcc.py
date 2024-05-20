@@ -42,33 +42,13 @@ from pprint import pprint,pformat
 
 from .util import *
 from .runtime import *
-from . import drivers
+from .drivers import createDriverClass, getDrivers
 
 logging.basicConfig(level = logging.INFO,
                     format="%(asctime)s [%(funcName)s:%(lineno)03d] %(levelname)-5s: %(message)s",
                     datefmt="%m-%d-%Y %H:%M:%S",
                     stream = sys.stdout)
                     
-## ==============================================
-## createDriverClass
-## ==============================================
-def createDriverClass(name):
-    full_name = "%sDriver" % name.title()
-    mod = import_module(f".{full_name.lower()}", package="pytpcc.drivers")
-    klass = getattr(mod, full_name)
-    return klass
-## DEF
-
-## ==============================================
-## getDrivers
-## ==============================================
-def getDrivers():
-    drivers = [ ]
-    for f in [os.path.basename(x).replace("driver.py", "") for x in glob.glob(f"{pathlib.Path(__file__).parent.resolve()}/drivers/*driver.py")]:
-        if f != "abstract": drivers.append(f)
-    return (drivers)
-## DEF
-
 ## ==============================================
 ## startLoading
 ## ==============================================

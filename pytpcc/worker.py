@@ -41,18 +41,7 @@ from pprint import pprint,pformat
 
 from .util import *
 from .runtime import *
-from . import drivers
-
-## ==============================================
-## createDriverClass
-## ==============================================
-def createDriverClass(name):
-    full_name = "%sDriver" % name.title()
-    mod = __import__('drivers.%s' % full_name.lower(), globals(), locals(), [full_name])
-    klass = getattr(mod, full_name)
-    return klass
-## DEF
-
+from .drivers import createDriverClass
 
 ## ==============================================
 ## loaderFunc
