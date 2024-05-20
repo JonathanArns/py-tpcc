@@ -6,7 +6,7 @@ Created on May 2, 2011
 Scalaris Driver for CS227 TPCC Benchmark
 '''
 
-from .abstractdriver import *
+from drivers.abstractdriver import *
 
 import os, logging, subprocess, constants
 

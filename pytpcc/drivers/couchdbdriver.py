@@ -28,7 +28,7 @@ import logging
 from pprint import pformat
 
 import constants
-from .abstractdriver import *
+from drivers.abstractdriver import *
 
 import couchdb
 from uuid import uuid4

@@ -25,7 +25,7 @@
 # -----------------------------------------------------------------------
 
 
-from .abstractdriver import *
+from drivers.abstractdriver import *
 from pprint import pprint, pformat
 from pyrant import protocol
 

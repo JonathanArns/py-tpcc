@@ -34,7 +34,7 @@ import memcache
 from pprint import pprint,pformat
 
 import constants
-from .abstractdriver import *
+from drivers.abstractdriver import *
 MAX_CUSTOMER_ID = 3000
 MAX_ORDER_ID = 2999
 

@@ -38,7 +38,7 @@ import pymongo
 from pprint import pprint,pformat
 
 import constants
-from .abstractdriver import *
+from drivers.abstractdriver import *
 
 TABLE_COLUMNS = {
     constants.TABLENAME_ITEM: [

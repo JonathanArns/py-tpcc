@@ -1,7 +1,7 @@
 import os, redis, time, sys
 from datetime import datetime
 from pprint import pprint,pformat
-from .abstractdriver import *
+from drivers.abstractdriver import *
 
 #----------------------------------------------------------------------------
 # Redis TPC-C Driver

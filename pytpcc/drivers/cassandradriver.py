@@ -36,7 +36,7 @@ import uuid
 from pprint import pprint,pformat
 import constants
 
-from .abstractdriver import *
+from drivers.abstractdriver import *
 ## ==============================================
 ## AbstractDriver
 ## ==============================================

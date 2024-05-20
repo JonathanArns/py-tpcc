@@ -26,7 +26,7 @@
 
 from datetime import datetime
 
-from .. import constants
+import constants
 
 ## ==============================================
 ## AbstractDriver

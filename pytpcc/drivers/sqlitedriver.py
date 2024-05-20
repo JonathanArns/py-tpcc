@@ -38,7 +38,7 @@ import subprocess
 from pprint import pprint,pformat
 
 import constants
-from .abstractdriver import *
+from drivers.abstractdriver import *
 
 TXN_QUERIES = {
     "DELIVERY": {
