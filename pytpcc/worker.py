@@ -39,10 +39,10 @@ import traceback
 from pathlib import Path
 from pprint import pprint,pformat
 
-from . import message
-from .util import *
-from .runtime import *
-from .drivers import createDriverClass
+import message
+from util import *
+from runtime import *
+from drivers import createDriverClass
 
 ## ==============================================
 ## loaderFunc
