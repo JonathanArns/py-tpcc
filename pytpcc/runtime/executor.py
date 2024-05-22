@@ -54,7 +54,7 @@ class Executor:
     def execute(self, duration):
         r = results.Results()
         assert r
-        logging.info("Executing benchmark for %d seconds" % duration)
+        # logging.info("Executing benchmark for %d seconds" % duration)
         start = r.startBenchmark()
         debug = logging.getLogger().isEnabledFor(logging.DEBUG)
 

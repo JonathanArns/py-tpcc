@@ -26,6 +26,7 @@
 
 import logging
 import time
+import json
 
 class Results:
     
@@ -91,8 +92,35 @@ class Results:
             
     def __str__(self):
         return self.show()
+
+    def json(self, load_time=None):
+        if self.start == None:
+            return {"error": "Benchmark not started"}
+        if self.stop == None:
+            duration = time.time() - self.start
+        else:
+            duration = self.stop - self.start
+
+        output = {
+            "load_time": load_time,
+            "real_duration": duration,
+        }
+        total_time = 0
+        total_cnt = 0
+        for txn in sorted(self.txn_counters.keys()):
+            output[f"{txn}_throughput"] = self.txn_counters[txn] / self.txn_times[txn]
+            output[f"{txn}_mean_latency"] = self.txn_times[txn] / self.txn_counters[txn] * 1000
+            output[f"{txn}_count"] = self.txn_counters[txn]
+            output[f"{txn}_time"] = self.txn_times[txn]
+            total_time += txn_time
+            total_cnt += txn_cnt
+        output["total_throughput"] = total_cnt / total_time
+        output["total_mean_latency"] = total_time / total_cnt * 1000
+        output["total_count"] = total_cnt
+        output["total_time"] = total_time
+        return json.dumps(output)
         
-    def show(self, load_time = None):
+    def show(self, load_time=None):
         if self.start == None:
             return "Benchmark not started"
         if self.stop == None:

@@ -66,7 +66,6 @@ def startLoading(scalParameters,args,config,channels):
     for w_id in range(scaleParameters.starting_warehouse, scaleParameters.ending_warehouse+1):
         idx = w_id % procs
         w_ids[idx].append(w_id)
-    print(w_ids)
         
     load_start=time.time()
     args_copy = copy(args)
@@ -203,7 +202,7 @@ if __name__ == '__main__':
     if not args['no_execute']:
         results = startExecution(scaleParameters, args, config,channels)
         assert results
-        print(results.show(load_time))
+        print(results.json(load_time))
     ## IF
     
 ## MAIN
