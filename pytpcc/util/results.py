@@ -112,8 +112,8 @@ class Results:
             output[f"{txn}_mean_latency"] = self.txn_times[txn] / self.txn_counters[txn] * 1000
             output[f"{txn}_count"] = self.txn_counters[txn]
             output[f"{txn}_time"] = self.txn_times[txn]
-            total_time += txn_time
-            total_cnt += txn_cnt
+            total_time += self.txn_times[txn]
+            total_cnt += self.txn_counters[txn]
         output["total_throughput"] = total_cnt / total_time
         output["total_mean_latency"] = total_time / total_cnt * 1000
         output["total_count"] = total_cnt
