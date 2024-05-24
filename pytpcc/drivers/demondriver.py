@@ -2,6 +2,7 @@ import os
 import sys
 import logging
 import http.client
+import time
 from pprint import pprint,pformat
 from datetime import datetime
 
@@ -76,7 +77,8 @@ class DemonDriver(AbstractDriver):
     ## loadFinish
     ## ----------------------------------------------
     def loadFinish(self):
-        pass
+        # wait for state to be settled
+        time.sleep(5)
 
     ## ----------------------------------------------
     ## doDelivery
