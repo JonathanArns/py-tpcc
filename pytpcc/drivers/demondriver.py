@@ -52,10 +52,10 @@ class DemonDriver(AbstractDriver):
             try: 
                 self.conn.request('POST', '/query', query, {})
                 response = self.conn.getresponse()
+                if response.status >= 400:
+                    continue
                 return response.read()
             except Exception as e:
-                print(e)
-                print(("on query: " + query))
                 self.conn = http.client.HTTPConnection(self.addr)
     
     ## ----------------------------------------------
