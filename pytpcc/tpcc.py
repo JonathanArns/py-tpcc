@@ -251,7 +251,7 @@ if __name__ == '__main__':
         else:
             results = startExecution(driverClass, scaleParameters, args, config)
         assert results
-        print(results.show(load_time))
+        print(results.json(load_time))
     ## IF
     
 ## MAIN
