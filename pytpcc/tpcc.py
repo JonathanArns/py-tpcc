@@ -36,6 +36,7 @@ import glob
 import time 
 import multiprocessing
 import pathlib
+from copy import copy
 from importlib import import_module
 from configparser import ConfigParser
 from pprint import pprint,pformat
