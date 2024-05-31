@@ -67,8 +67,10 @@ def startLoading(driverClass, scaleParameters, args, config):
     ## FOR
     
     loader_results = [ ]
+    args_copy = copy(args)
+    del args_copy["config"]
     for i in range(args['clients']):
-        r = pool.apply_async(loaderFunc, (driverClass, scaleParameters, args, config, w_ids[i], True))
+        r = pool.apply_async(loaderFunc, (driverClass, scaleParameters, args_copy, config, w_ids[i], True))
         loader_results.append(r)
     ## FOR
     
@@ -115,8 +117,10 @@ def startExecution(driverClass, scaleParameters, args, config):
     debug = logging.getLogger().isEnabledFor(logging.DEBUG)
     
     worker_results = [ ]
+    args_copy = copy(args)
+    del args_copy["config"]
     for i in range(args['clients']):
-        r = pool.apply_async(executorFunc, (driverClass, scaleParameters, args, config, debug,))
+        r = pool.apply_async(executorFunc, (driverClass, scaleParameters, args_copy, config, debug,))
         worker_results.append(r)
     ## FOR
     pool.close()
