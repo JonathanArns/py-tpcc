@@ -64,7 +64,7 @@ class DemonDriver(AbstractDriver):
     def loadTuples(self, tableName, tuples):
         if len(tuples) == 0: return
         logging.debug("Loading %d tuples for tableName %s" % (len(tuples), tableName))
-        query = "load_tuples " + tableName + " " + ";".join([",".join([val.isoformat() if isinstance(val, datetime) else str(val) for val in item]) for item in tuples])
+        query = "load_tuples " + tableName + " " + ";".join([",".join([str(int(val.timestamp())) if isinstance(val, datetime) else str(val) for val in item]) for item in tuples])
         self.exec_query(query)
         
     ## ----------------------------------------------
@@ -88,7 +88,7 @@ class DemonDriver(AbstractDriver):
         o_carrier_id = params["o_carrier_id"]
         ol_delivery_d = params["ol_delivery_d"]
         
-        query = "delivery " + str(w_id) + " " + str(o_carrier_id) + " " + ol_delivery_d.isoformat()
+        query = "delivery " + str(w_id) + " " + str(o_carrier_id) + " " + str(int(ol_delivery_d.timestamp())) 
         self.exec_query(query)
 
     ## ----------------------------------------------
@@ -102,7 +102,7 @@ class DemonDriver(AbstractDriver):
         i_ids = ",".join([str(item) for item in params["i_ids"]])
         i_w_ids = ",".join([str(item) for item in params["i_w_ids"]])
         i_qtys = ",".join([str(item) for item in params["i_qtys"]])
-        query = " ".join(["new_order", str(w_id), str(d_id), str(c_id), o_entry_d.isoformat(), i_ids, i_w_ids, i_qtys])
+        query = " ".join(["new_order", str(w_id), str(d_id), str(c_id), str(int(o_entry_d.timestamp())), i_ids, i_w_ids, i_qtys])
         self.exec_query(query)
 
 
@@ -129,7 +129,7 @@ class DemonDriver(AbstractDriver):
         c_id = params["c_id"]
         c_last = params["c_last"]
         h_date = params["h_date"]
-        query = " ".join(["payment", str(w_id), str(d_id), str(h_amount), str(c_w_id), str(c_d_id), str(c_id), str(c_last), h_date.isoformat()])
+        query = " ".join(["payment", str(w_id), str(d_id), str(h_amount), str(c_w_id), str(c_d_id), str(c_id), str(c_last), str(int(h_date.timestamp()))])
         self.exec_query(query)
 
         
