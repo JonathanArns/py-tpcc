@@ -47,7 +47,7 @@ from util import *
 from runtime import *
 from drivers import createDriverClass, getDrivers
 
-logging.basicConfig(level = logging.INFO,
+logging.basicConfig(level = logging.ERROR,
                     format="%(asctime)s [%(funcName)s:%(lineno)03d] %(levelname)-5s: %(message)s",
                     datefmt="%m-%d-%Y %H:%M:%S",
                     stream = sys.stdout)
