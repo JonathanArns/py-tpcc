@@ -1,8 +1,8 @@
 import os
 import sys
 import logging
-import http.client
 import time
+import httpx
 from pprint import pprint,pformat
 from datetime import datetime
 
@@ -44,19 +44,14 @@ class DemonDriver(AbstractDriver):
         for key in list(DemonDriver.DEFAULT_CONFIG.keys()):
             assert key in config, "Missing parameter '%s' in %s configuration" % (key, self.name)
         
-        self.addr = config["host"] + ":" + str(config["port"])
-        self.conn = http.client.HTTPConnection(self.addr)
+        self.url = f"http://{config['host']}:{str(config['port'])}/query"
+        self.client = httpx.Client(http2=True)
 
     def exec_query(self, query):
-        for _ in range(3):
-            try: 
-                self.conn.request('POST', '/query', query, {})
-                response = self.conn.getresponse()
-                if response.status >= 400:
-                    continue
-                return response.read()
-            except Exception as e:
-                self.conn = http.client.HTTPConnection(self.addr)
+        response = self.client.post(self.url, body=query)
+        if response.status_code >= 400:
+            raise Exception("bad response")
+        return response.read()
     
     ## ----------------------------------------------
     ## loadTuples
