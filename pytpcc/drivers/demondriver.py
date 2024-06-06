@@ -48,7 +48,7 @@ class DemonDriver(AbstractDriver):
         self.client = httpx.Client(http2=True)
 
     def exec_query(self, query):
-        response = self.client.post(self.url, content=query)
+        response = self.client.post(self.url, content=query.encode("utf-8"))
         if response.status_code >= 400:
             raise Exception("bad response")
         return response.read()
