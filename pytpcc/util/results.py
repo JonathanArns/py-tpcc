@@ -108,13 +108,13 @@ class Results:
         total_time = 0
         total_cnt = 0
         for txn in sorted(self.txn_counters.keys()):
-            output[f"{txn}_throughput"] = self.txn_counters[txn] / self.txn_times[txn]
+            output[f"{txn}_throughput"] = self.txn_counters[txn] / duration
             output[f"{txn}_mean_latency"] = self.txn_times[txn] / self.txn_counters[txn] * 1000
             output[f"{txn}_count"] = self.txn_counters[txn]
             output[f"{txn}_time"] = self.txn_times[txn]
             total_time += self.txn_times[txn]
             total_cnt += self.txn_counters[txn]
-        output["total_throughput"] = total_cnt / total_time
+        output["total_throughput"] = total_cnt / duration
         output["total_mean_latency"] = total_time / total_cnt * 1000
         output["total_count"] = total_cnt
         output["total_time"] = total_time
