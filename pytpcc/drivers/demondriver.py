@@ -45,7 +45,7 @@ class DemonDriver(AbstractDriver):
             assert key in config, "Missing parameter '%s' in %s configuration" % (key, self.name)
         
         self.url = f"http://{config['host']}:{str(config['port'])}/query"
-        transport = httpx.Transport(retries=1)
+        transport = httpx.HTTPTransport(retries=1)
         self.client = httpx.Client(http2=True, transport=transport)
 
     def exec_query(self, query):
